@@ -1,0 +1,14 @@
+{
+  "name": "위시리스트",
+  "short_name": "위시리스트",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0d9488",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
+   *(적당한 이미지 파일 2개를 `icon-192.png`, `icon-512.png`로 이름 붙여 함께 업로드해주세요.)*
+
