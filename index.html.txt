@@ -1,0 +1,50 @@
+!DOCTYPE html
+html lang=ko
+head
+    meta charset=UTF-8
+    meta name=viewport content=width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no
+    titlePink Wishlisttitle
+    link rel=manifest href=manifest.json
+    meta name=theme-color content=#ffb6c1
+    link rel=stylesheet href=style.css
+head
+body
+    header
+        button id=menuBtn☰button
+        h1Wishlisth1
+    header
+
+    nav id=sidebar
+        button id=closeBtn×button
+        h2목록h2
+        div id=treeViewdiv
+    nav
+
+    main id=mainContent
+        section class=add-form
+            h3위시리스트 추가h3
+            input type=text id=inputRegion placeholder=지역 (예 도쿄) required
+            input type=text id=inputStore placeholder=매장 (예 돈키호테) required
+            input type=text id=inputName placeholder=품목 이름 required
+            input type=text id=inputPrice placeholder=가격
+            textarea id=inputDesc placeholder=설명 및 메모textarea
+            input type=file id=inputImage accept=image
+            button id=saveBtn저장하기button
+        section
+
+        section class=item-list
+            h3 id=currentViewTitle전체 보기h3
+            div id=itemsContainerdiv
+        section
+    main
+
+    script src=app.jsscript
+    script
+         서비스 워커 등록 (PWA 필수)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(() = console.log('Service Worker Registered'));
+        }
+    script
+body
+html
