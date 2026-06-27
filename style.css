@@ -34,7 +34,6 @@ header button {
     font-size: 1.5rem; cursor: pointer;
 }
 
-/* 사이드바 설정 */
 #sidebar {
     position: fixed;
     top: 0; left: -250px;
@@ -48,7 +47,6 @@ header button {
 }
 
 #sidebar.open { left: 0; }
-
 #sidebar h2 { color: var(--dark-pink); margin-bottom: 20px; }
 #closeBtn {
     position: absolute; top: 15px; right: 15px;
@@ -56,14 +54,12 @@ header button {
     color: var(--dark-pink); cursor: pointer;
 }
 
-/* 사이드바 트리 뷰 */
-.region-group { margin-bottom: 10px; font-weight: bold; cursor: pointer;}
-.store-group { margin-left: 15px; font-weight: normal; font-size: 0.9rem; color: #666; margin-top: 5px;}
+/* 지역(region) 관련 스타일 삭제하고 매장(store) 스타일 단일화 */
+.store-group { margin-bottom: 15px; font-weight: bold; cursor: pointer; color: var(--text-color); }
 .store-group:hover { color: var(--dark-pink); }
 
 main { padding: 20px; }
 
-/* 폼 디자인 */
 .add-form {
     background: white; padding: 15px; border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.05); margin-bottom: 20px;
@@ -79,7 +75,6 @@ main { padding: 20px; }
     font-weight: bold;
 }
 
-/* 아이템 카드 디자인 */
 .card {
     background: white; border-radius: 10px; padding: 15px;
     margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
