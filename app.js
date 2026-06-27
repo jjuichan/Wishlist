@@ -1,16 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     let items = JSON.parse(localStorage.getItem('wishlistItems')) || [];
-    let currentFilter = { region: null, store: null };
+    let currentFilter = { store: null };
 
     const sidebar = document.getElementById('sidebar');
     const menuBtn = document.getElementById('menuBtn');
     const closeBtn = document.getElementById('closeBtn');
     
-    // 사이드바 여닫기
     menuBtn.addEventListener('click', () => sidebar.classList.add('open'));
     closeBtn.addEventListener('click', () => sidebar.classList.remove('open'));
 
-    // 이미지 파일을 Base64 문자열로 변환
     function getBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -20,17 +18,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 아이템 저장
     document.getElementById('saveBtn').addEventListener('click', async () => {
-        const region = document.getElementById('inputRegion').value.trim();
         const store = document.getElementById('inputStore').value.trim();
         const name = document.getElementById('inputName').value.trim();
         const price = document.getElementById('inputPrice').value.trim();
         const desc = document.getElementById('inputDesc').value.trim();
         const fileInput = document.getElementById('inputImage');
         
-        if (!region || !store || !name) {
-            alert('지역, 매장, 품목 이름은 필수입니다!');
+        if (!store || !name) {
+            alert('매장과 품목 이름은 필수입니다!');
             return;
         }
 
@@ -39,11 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
             imageBase64 = await getBase64(fileInput.files[0]);
         }
 
-        const newItem = { id: Date.now(), region, store, name, price, desc, image: imageBase64 };
+        const newItem = { id: Date.now(), store, name, price, desc, image: imageBase64 };
         items.push(newItem);
         saveData();
         
-        // 폼 초기화
         document.querySelectorAll('.add-form input, .add-form textarea').forEach(el => el.value = '');
     });
 
@@ -53,52 +48,40 @@ document.addEventListener('DOMContentLoaded', () => {
         renderItems();
     }
 
-    // 아이템 삭제
     window.deleteItem = function(id) {
         items = items.filter(item => item.id !== id);
         saveData();
     }
 
-    // 지역/매장별 보기 필터링
-    window.filterItems = function(region, store) {
-        currentFilter = { region, store };
+    window.filterItems = function(store) {
+        currentFilter = { store };
         sidebar.classList.remove('open');
         renderItems();
     }
 
-    // 사이드바 목록 렌더링 (지역 > 매장)
     function renderSidebar() {
         const treeView = document.getElementById('treeView');
-        treeView.innerHTML = `<div class="region-group" onclick="filterItems(null, null)">전체 보기</div>`;
+        treeView.innerHTML = `<div class="store-group" onclick="filterItems(null)">전체 보기</div>`;
         
-        const hierarchy = {};
-        items.forEach(item => {
-            if (!hierarchy[item.region]) hierarchy[item.region] = new Set();
-            hierarchy[item.region].add(item.store);
-        });
+        // 매장 이름만 중복 없이 추출
+        const stores = [...new Set(items.map(item => item.store))];
 
-        for (const region in hierarchy) {
-            let html = `<div class="region-group">📍 ${region}`;
-            hierarchy[region].forEach(store => {
-                html += `<div class="store-group" onclick="filterItems('${region}', '${store}')">↳ ${store}</div>`;
-            });
-            html += `</div>`;
-            treeView.innerHTML += html;
-        }
+        stores.forEach(store => {
+            treeView.innerHTML += `<div class="store-group" onclick="filterItems('${store}')">📍 ${store}</div>`;
+        });
     }
 
-    // 메인 아이템 렌더링
     function renderItems() {
         const container = document.getElementById('itemsContainer');
         const title = document.getElementById('currentViewTitle');
         container.innerHTML = '';
 
-        if (!currentFilter.region) title.innerText = "전체 보기";
-        else title.innerText = `${currentFilter.region} > ${currentFilter.store}`;
+        if (!currentFilter.store) title.innerText = "전체 보기";
+        else title.innerText = currentFilter.store;
 
         const filtered = items.filter(item => {
-            if (!currentFilter.region) return true;
-            return item.region === currentFilter.region && item.store === currentFilter.store;
+            if (!currentFilter.store) return true;
+            return item.store === currentFilter.store;
         });
 
         filtered.forEach(item => {
@@ -106,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.className = 'card';
             card.innerHTML = `
                 <div class="card-header">
-                    <span class="badge">${item.region} > ${item.store}</span>
+                    <span class="badge">${item.store}</span>
                     <button class="delete-btn" onclick="deleteItem(${item.id})">삭제</button>
                 </div>
                 ${item.image ? `<img src="${item.image}" style="display:block;">` : ''}
